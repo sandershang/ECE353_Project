@@ -23,6 +23,7 @@
 #include "main.h"
 
 
+
 //*****************************************************************************
 //*****************************************************************************
 void DisableInterrupts(void)
@@ -44,9 +45,27 @@ void EnableInterrupts(void)
 
 //*****************************************************************************
 //*****************************************************************************
+
+
+//*****************************************************************************
+// Initializes all of the peripherls used in HW3
+//*****************************************************************************
+void init_hardware(void)
+{
+  lcd_config_gpio();
+  lcd_config_screen();
+  lcd_clear_screen(LCD_COLOR_BLACK);
+
+}
 int 
 main(void)
 {
+		init_hardware();
+		lcd_draw_image(120, titleLabel_WidthPixels, 110, titleLabel_HeightPixels, titleLabel_Bitmaps, LCD_COLOR_BLUE, LCD_COLOR_BLACK);
+    lcd_draw_image(120, startLabel_WidthPixels, 170, startLabel_HeightPixels, startLabel_Bitmaps, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+		lcd_draw_image(120, spaceship_WidthPixels, 290, spaceship_HeightPixels, spaceship_Bitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);
+	  lcd_draw_image(60, asteriod_WidthPixels, 210, asteriod_HeightPixels, asteriod_Bitmaps, LCD_COLOR_GRAY, LCD_COLOR_BLACK);
 
-    while(1){};
+
+		while(1){};
 }
