@@ -44,4 +44,5 @@
 extern volatile uint16_t SHIP_X_COORD;
 extern volatile uint16_t SHIP_Y_COORD;
 extern volatile bool ALERT_SHIP;
+extern volatile bool LED_STATUS;
 #endif

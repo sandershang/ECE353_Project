@@ -38,6 +38,7 @@
 #include "ft6x06.h"
 #include "serial_debug.h"
 
+#define ONE_SEC 500000*100
 void init_hardware();
 
 

@@ -26,7 +26,7 @@
 
 volatile bool ALERT_SHIP = true;
 volatile bool ALERT_ASTEROID = true;
-
+volatile bool LED_STATUS = true;
 //*****************************************************************************
 //*****************************************************************************
 void DisableInterrupts(void)
@@ -59,10 +59,20 @@ main(void)
 		    init_start_screen();
 		    touch_start = touch_label();
 	    }
-	
+			
 	  EnableInterrupts();
-	
+		gp_timer_wait(TIMER1_BASE, ONE_SEC);
+			
 	  while(!game_over)  {
+			
+			if(LED_STATUS) {
+					lp_io_set_pin(RED_PIN);
+					LED_STATUS = false;
+			}else{
+					lp_io_clear_pin(RED_PIN);
+			}
+			
+			
 			if(ALERT_SHIP)  {
 					ALERT_SHIP = false;
 					lcd_draw_image(SHIP_X_COORD, spaceship_WidthPixels, SHIP_Y_COORD, spaceship_HeightPixels, spaceship_Bitmaps, LCD_COLOR_WHITE, LCD_COLOR_BLACK);

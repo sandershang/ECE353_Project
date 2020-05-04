@@ -68,6 +68,12 @@ void TIMER0_Handler(void)
 	//will need this somewhere: PB_DIR = 
 	TIMER0->ICR |= TIMER_ICR_TATOCINT;
 }
+void TIMER1A_Handler(void)
+{
+	LED_STATUS = true;
+
+	TIMER1->ICR |= TIMER_ICR_TATOCINT;
+}
 //*****************************************************************************
 // TIMER2 ISR is used to determine when to move the ship
 //*****************************************************************************
