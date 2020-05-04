@@ -29,6 +29,8 @@ static volatile uint16_t PS2_Y_DATA = 0;
 static volatile PS2_DIR_t PS2_DIR = PS2_DIR_CENTER;
 static volatile push_button_t PB_DIR = PUSH_BUTTON_NONE;
 
+static volatile uint16_t move_count = 0;	//num of pixels to move in current direction
+static volatile PS2_DIR_t asteriod_dir = PS2_DIR_INIT;
 
 
 //*****************************************************************************
@@ -65,7 +67,6 @@ void TIMER0_Handler(void)
 	if(debounce()){
 		change_ship_color(PB_DIR);
 	}
-	//will need this somewhere: PB_DIR = 
 	TIMER0->ICR |= TIMER_ICR_TATOCINT;
 }
 void TIMER1A_Handler(void)
@@ -104,7 +105,22 @@ void TIMER2A_Handler(void)
 // TIMER3 ISR is used to determine when to move the spaceship
 //*****************************************************************************
 void TIMER3A_Handler(void)
-{}
+{
+	bool touch_edge = contact_edge(asteriod_dir, ASTEROID_1_X_COORD, ASTEROID_1_Y_COORD, asteriod_HeightPixels, asteriod_WidthPixels);
+	
+	while (move_count == 0 || touch_edge) {
+		asteriod_dir = get_new_direction(asteriod_dir);
+		move_count = get_new_move_count();
+		touch_edge = contact_edge(asteriod_dir, ASTEROID_1_X_COORD, ASTEROID_1_Y_COORD, asteriod_HeightPixels, asteriod_WidthPixels);
+	}
+	
+	move_count--;
+	move_image(asteriod_dir, &ASTEROID_1_X_COORD, &ASTEROID_1_Y_COORD, asteriod_HeightPixels, asteriod_WidthPixels);
+	
+	ALERT_ASTEROID = true;
+	 // Clear the interrupt
+	TIMER3->ICR |= TIMER_ICR_TATOCINT;
+}
 
 //*****************************************************************************
 // TIMER4 ISR is used to trigger the ADC
